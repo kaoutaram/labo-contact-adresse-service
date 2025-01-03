@@ -113,12 +113,15 @@ public class AdresseServiceImplTestMockito {
     public void testGetActiveAdresses() {
         // Préparez les données
         Adresse adresseActive = new Adresse();
+        adresseActive.setId(1L);
         adresseActive.setIsActive(true);
 
         Adresse adresseInactive = new Adresse();
+        adresseInactive.setId(2L);
         adresseInactive.setIsActive(false);
 
-        when(adresseRepository.findAll()).thenReturn(Arrays.asList(adresseActive, adresseInactive));
+        // Simulez le comportement du repository pour findByIsActiveTrue
+        when(adresseRepository.findByIsActiveTrue()).thenReturn(Arrays.asList(adresseActive));
 
         // Appelez la méthode
         List<Adresse> activeAdresses = adresseService.getActiveAdresses();
@@ -127,4 +130,5 @@ public class AdresseServiceImplTestMockito {
         assertEquals(1, activeAdresses.size(), "Il devrait y avoir une seule adresse active");
         assertTrue(activeAdresses.get(0).getIsActive(), "L'adresse active devrait être marquée comme active");
     }
+
 }

@@ -38,9 +38,9 @@ public class AdresseServiceImpl implements AdresseService {
 
 	@Override
 	public Adresse getAdresseById(Long id) {
-
-		return adresserep.getById(id);
+	    return adresserep.findById(id).orElseThrow(() -> new RuntimeException("Adresse non trouvée"));
 	}
+
 
 	@Override
 	public Long countAdresses() {
@@ -50,7 +50,8 @@ public class AdresseServiceImpl implements AdresseService {
 
 	@Override
 	public void desactivateAdresseById(Long id) {
-	    Adresse adresse = adresserep.getById(id); // Récupère l'adresse par ID
+	    Adresse adresse = adresserep.findById(id)
+	        .orElseThrow(() -> new IllegalArgumentException("Adresse introuvable pour l'ID : " + id));
 	    adresse.setIsActive(false); // Rendre l'adresse inactive
 	    adresserep.save(adresse); // Sauvegarde la mise à jour
 	}
